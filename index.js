@@ -15,12 +15,6 @@ const canvasHeight = 480;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
-//Pinta o background do canvas
-ctx.beginPath();
-ctx.fillStyle = 'black';
-ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-ctx.closePath();
-
 class Poligono {
   constructor(posX, posY, width, height, color) {
     this.posX = posX;
@@ -29,10 +23,35 @@ class Poligono {
     this.height = height;
     this.color = color;
   }
+
+  criaTela() {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    ctx.closePath();
+  }
+
+  playerInfo() {
+    ctx.beginPath();
+    ctx.font = '30px monospace';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.fillText(
+      `${player1.nome ?? 'Jogador 1'}: ${player1.pontoJogador}`,
+      100,
+      50
+    );
+    ctx.fillText(
+      `${player2.nome ?? 'Jogador 2'}: ${player2.pontoJogador}`,
+      540,
+      50
+    );
+    ctx.closePath();
+  }
 }
 
 class Jogador extends Poligono {
-  constructor(posX, posY, width, height, color, velY, pontoJogador) {
+  constructor(posX, posY, width, height, color, velY, pontoJogador, nome) {
     super(velY, pontoJogador);
     this.posX = posX;
     this.posY = posY;
@@ -41,6 +60,14 @@ class Jogador extends Poligono {
     this.color = color;
     this.velY = velY;
     this.pontoJogador = pontoJogador;
+    this.nome = nome;
+  }
+
+  desenharJogador() {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    ctx.closePath();
   }
 }
 
@@ -55,41 +82,45 @@ class Bola extends Poligono {
     this.velX = velX;
     this.velY = velY;
   }
+
+  desenharBola() {
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    ctx.closePath();
+  }
 }
 
-const player1 = new Jogador(10, 240, 20, 60, 'rgb(192, 192, 192)', 0, 0);
-const player2 = new Jogador(610, 240, 20, 60, 'rgb(255, 215, 0)', 0, 0);
+const tela = new Poligono(0, 0, canvasWidth, canvasHeight, 'black');
+const player1 = new Jogador(
+  10,
+  240,
+  20,
+  60,
+  '#FD0E35',
+  0,
+  0,
+  prompt('Nome do primeiro jogador')
+);
+const player2 = new Jogador(
+  610,
+  240,
+  20,
+  60,
+  '#00468C',
+  0,
+  0,
+  prompt('nome do segundo jogador')
+);
 const bola = new Bola(320, 240, 10, 10, 'white', 3, 2);
 const adicionaPonto = 1;
 
 function draw() {
-  ctx.beginPath();
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-  ctx.closePath();
-
-  ctx.beginPath();
-  ctx.fillStyle = player1.color;
-  ctx.fillRect(player1.posX, player1.posY, player1.width, player1.height);
-  ctx.closePath();
-
-  ctx.beginPath();
-  ctx.fillStyle = player2.color;
-  ctx.fillRect(player2.posX, player2.posY, player2.width, player2.height);
-  ctx.closePath();
-
-  ctx.beginPath();
-  ctx.fillStyle = bola.color;
-  ctx.fillRect(bola.posX, bola.posY, bola.width, bola.height);
-  ctx.closePath();
-
-  ctx.beginPath();
-  ctx.font = '30px monospace';
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText(`${'jogador1'}: ${player1.pontoJogador}`, 100, 50);
-  ctx.fillText(`${'jogador2'}: ${player2.pontoJogador}`, 540, 50);
-  ctx.closePath();
+  tela.criaTela();
+  tela.playerInfo();
+  player1.desenharJogador();
+  player2.desenharJogador();
+  bola.desenharBola();
 }
 
 function update() {
