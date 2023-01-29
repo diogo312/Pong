@@ -125,12 +125,6 @@ function draw() {
 
 function update() {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-  if (player1.posY < 0 || player1.posY > canvasHeight) {
-    player1.velocityY = 0;
-  }
-  if (player2.posY < 0 || player2.posY > canvasHeight) {
-    player2.velY = 0;
-  }
   if (
     bola.posX > player2.posX - player2.width / 2 &&
     bola.posY > player2.posY &&
