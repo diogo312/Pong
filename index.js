@@ -1,7 +1,7 @@
 // Import stylesheets
 import './style.css';
 
-//Pega o objeto canvas do no html
+//Pega o objeto canvas do html
 const canvas = document.getElementById('canvas');
 
 //Pega o contexto do canvas
@@ -11,6 +11,7 @@ const ctx = canvas.getContext('2d');
 const canvasWidth = 640;
 const canvasHeight = 480;
 
+//Classe genérica de um objeto
 class Poligono {
   constructor(posX, posY, width, height, color) {
     this.posX = posX;
