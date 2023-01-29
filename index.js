@@ -11,10 +11,6 @@ const ctx = canvas.getContext('2d');
 const canvasWidth = 640;
 const canvasHeight = 480;
 
-//Aplica a largura e altura no canvas
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
-
 class Poligono {
   constructor(posX, posY, width, height, color) {
     this.posX = posX;
@@ -27,7 +23,12 @@ class Poligono {
   desenhaNaTela() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    ctx.fillRect(
+      this.posX,
+      this.posY,
+      (canvas.width = this.width),
+      (canvas.height = this.height)
+    );
     ctx.closePath();
     ctx.beginPath();
     ctx.font = '30px monospace';
