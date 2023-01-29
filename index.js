@@ -24,28 +24,17 @@ class Poligono {
     this.color = color;
   }
 
-  criaTela() {
+  desenhaNaTela() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.fillRect(this.posX, this.posY, this.width, this.height);
     ctx.closePath();
-  }
-
-  playerInfo() {
     ctx.beginPath();
     ctx.font = '30px monospace';
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
-    ctx.fillText(
-      `${player1.nome ?? 'Jogador 1'}: ${player1.pontoJogador}`,
-      100,
-      50
-    );
-    ctx.fillText(
-      `${player2.nome ?? 'Jogador 2'}: ${player2.pontoJogador}`,
-      540,
-      50
-    );
+    ctx.fillText(`${player1.nome}: ${player1.pontoJogador}`, 100, 50);
+    ctx.fillText(`${player2.nome}: ${player2.pontoJogador}`, 540, 50);
     ctx.closePath();
   }
 }
@@ -63,7 +52,7 @@ class Jogador extends Poligono {
     this.nome = nome;
   }
 
-  desenharJogador() {
+  desenhaNaTela() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.fillRect(this.posX, this.posY, this.width, this.height);
@@ -83,7 +72,7 @@ class Bola extends Poligono {
     this.velY = velY;
   }
 
-  desenharBola() {
+  desenhaNaTela() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.fillRect(this.posX, this.posY, this.width, this.height);
@@ -116,11 +105,10 @@ const bola = new Bola(320, 240, 10, 10, 'white', 3, 2);
 const adicionaPonto = 1;
 
 function draw() {
-  tela.criaTela();
-  tela.playerInfo();
-  player1.desenharJogador();
-  player2.desenharJogador();
-  bola.desenharBola();
+  tela.desenhaNaTela();
+  player1.desenhaNaTela();
+  player2.desenhaNaTela();
+  bola.desenhaNaTela();
 }
 
 function update() {
@@ -153,7 +141,7 @@ function update() {
     player1.posY = 240;
     player2.posX = 610;
     player2.posY = 240;
-    bola.velX = -1 * Math.floor(Math.random() * (5 - 4) + 4);
+    bola.velX = -1 * 5;
     bola.velY = Math.floor(Math.random() * (2 - 2) + 2);
     player1.pontoJogador += adicionaPonto;
   } else if (bola.posX < 0) {
@@ -164,7 +152,7 @@ function update() {
     player1.posY = 240;
     player2.posX = 610;
     player2.posY = 240;
-    bola.velX = Math.floor(Math.random() * (5 - 2) + 2);
+    bola.velX = 5;
     bola.velY = Math.floor(Math.random() * (2 - 2) + 2);
     player2.pontoJogador += adicionaPonto;
   }
@@ -182,34 +170,33 @@ function gameLoop() {
 gameLoop();
 
 window.addEventListener('keydown', (e) => {
-  console.log(e);
-  if (e.key === 'w') {
-    player1.velY = -3;
-  }
-  if (e.key === 's') {
-    player1.velY = 3;
-  }
-  if (e.key === 'o') {
-    player2.velY = -3;
-  }
-  if (e.key === 'l') {
-    player2.velY = 3;
-  }
-  e.preventDefault();
-});
+  const movimentUpDownP1 =
+    e.key === 'w'
+      ? (player1.velY = -3)
+      : e.key === 's'
+      ? (player1.velY = 3)
+      : 'tecla invalida';
 
-window.addEventListener('keyup', (e) => {
-  if (e.key === 'w') {
-    player1.velY = 0;
-  }
-  if (e.key === 's') {
-    player1.velY = 0;
-  }
-  if (e.key === 'o') {
-    player2.velY = 0;
-  }
-  if (e.key === 'l') {
-    player2.velY = 0;
-  }
-  e.preventDefault();
+  const movimentUpdownP2 =
+    e.key === 'o'
+      ? (player2.velY = -3)
+      : e.key === 'l'
+      ? (player2.velY = 3)
+      : 'tecla invalida';
+
+  window.addEventListener('keyup', (e) => {
+    const stopP1 =
+      e.key === 'w'
+        ? (player1.velY = 0)
+        : e.key === 's'
+        ? (player1.velY = 0)
+        : 'tecla invalida';
+
+    const stopP2 =
+      e.key === 'o'
+        ? (player2.velY = 0)
+        : e.key === 'l'
+        ? (player2.velY = 0)
+        : 'tecla invalida';
+  });
 });
