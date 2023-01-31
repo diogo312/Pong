@@ -21,6 +21,10 @@ class Poligono {
     this.color = color;
   }
 
+  clearCanvas() {
+    ctx.clearRect(this.posX, this.posY, this.width, this.height);
+  }
+
   desenhaNaTela() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
@@ -52,6 +56,28 @@ class Jogador extends Poligono {
     this.velY = velY;
     this.pontoJogador = pontoJogador;
     this.nome = nome;
+  }
+
+  movementUpDown(commandUp, commandDown) {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === commandUp) {
+        this.velY = -3;
+      }
+      if (e.key === commandDown) {
+        this.velY = 3;
+      }
+    });
+  }
+
+  stopMovement(commandUp, commandDown) {
+    window.addEventListener('keyup', (e) => {
+      if (e.key === commandUp) {
+        this.velY = 0;
+      }
+      if (e.key === commandDown) {
+        this.velY = 0;
+      }
+    });
   }
 
   desenhaNaTela() {
@@ -114,7 +140,12 @@ function draw() {
 }
 
 function update() {
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  tela.clearCanvas();
+  player1.movementUpDown('w','s')
+  player1.stopMovement('w','s')
+  player2.movementUpDown('o','l')
+  player2.stopMovement('o','l')
+
   if (
     bola.posX > player2.posX - player2.width / 2 &&
     bola.posY > player2.posY &&
@@ -170,35 +201,3 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 gameLoop();
-
-window.addEventListener('keydown', (e) => {
-  const movimentUpDownP1 =
-    e.key === 'w'
-      ? (player1.velY = -3)
-      : e.key === 's'
-      ? (player1.velY = 3)
-      : 'tecla invalida';
-
-  const movimentUpdownP2 =
-    e.key === 'o'
-      ? (player2.velY = -3)
-      : e.key === 'l'
-      ? (player2.velY = 3)
-      : 'tecla invalida';
-
-  window.addEventListener('keyup', (e) => {
-    const stopP1 =
-      e.key === 'w'
-        ? (player1.velY = 0)
-        : e.key === 's'
-        ? (player1.velY = 0)
-        : 'tecla invalida';
-
-    const stopP2 =
-      e.key === 'o'
-        ? (player2.velY = 0)
-        : e.key === 'l'
-        ? (player2.velY = 0)
-        : 'tecla invalida';
-  });
-});
